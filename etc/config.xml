@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <shippinglabelintegration>
+            <module_configuration>
+                <enabled>1</enabled>
+                <debug>0</debug>
+            </module_configuration>
+            <endicia_config>
+                <endicia_auth_url><![CDATA[https://signin.testing.stampsendicia.com/authorize]]></endicia_auth_url>
+                <endicia_access_token_url><![CDATA[https://signin.testing.stampsendicia.com/oauth/token]]></endicia_access_token_url>
+                <endicia_callback_url><![CDATA[https://akstackpro.com/]]></endicia_callback_url>
+            </endicia_config>
+            <ups_worldship_config>
+                <ups_worldship_api_endpoint><![CDATA[https://wwwcie.ups.com/api]]></ups_worldship_api_endpoint>
+                <ups_worldship_access_token_url><![CDATA[https://wwwcie.ups.com/security/v1/oauth/token]]></ups_worldship_access_token_url>
+            </ups_worldship_config>
+        </shippinglabelintegration>
+    </default>
+</config>

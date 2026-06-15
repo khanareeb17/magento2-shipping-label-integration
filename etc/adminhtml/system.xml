@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="akstackpro" translate="label" sortOrder="200">
+            <label>Ak Stack Pro</label>
+        </tab>
+        <section id="shippinglabelintegration" translate="label" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>UPS And Endicia Web Services</label>
+            <tab>akstackpro</tab>
+            <resource>AkStackPro_ShippingLabelIntegration::configuration</resource>
+            <group id="module_configuration" translate="label" sortOrder="20" showInDefault="1">
+                <label>Developer Section</label>
+             
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Module</label>
+                      <comment>Enable/Disable the Endicia's module</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="debug" translate="label" type="select" sortOrder="80" showInDefault="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>By enabling the logs, Please check the log file inside /var/log/system.log</comment>
+                </field>
+            </group>
+            <group id="endicia_config" translate="label" sortOrder="20" showInDefault="1">
+                <label>Endicia Shipping integration settings</label>
+                
+                <field id="endicia_api_endpoint" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Shipping API End Point</label>
+                    <validate>validate-url</validate>
+                    <comment>Endicia's Inventory API End Point</comment>
+                </field>
+                <field id="endicia_client_id" translate="label" type="obscure" sortOrder="30" showInDefault="1">
+                    <label>Client ID</label>
+                    <comment>Your account's Client ID</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id='endicia_secret_id' translate='label' type='obscure' sortOrder='40' showInDefault='1'>
+                    <label>Password</label>
+                    <comment>Your account's Secret ID</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id='endicia_refresh_token' translate='label' type='obscure' sortOrder='40' showInDefault='1'>
+                    <label>Refresh Token</label>
+                    <comment>Your account's Refresh Token</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="endicia_auth_url" translate="label" type="text" sortOrder="50" showInDefault="1">
+                    <label>Endicia Auth URL</label>
+                    <validate>validate-url</validate>
+                    <comment>Endicia's Auth URL</comment>
+                </field>
+                <field id="endicia_access_token_url" translate="label" type="text" sortOrder="60" showInDefault="1">
+                    <label>Endicia Access Token URL</label>
+                    <validate>validate-url</validate>
+                    <comment>Endicia's Access Token</comment>
+                </field>
+                <field id="endicia_callback_url" translate="label" type="text" sortOrder="70" showInDefault="1">
+                    <label>Callback URL</label>
+                    <validate>validate-url</validate>
+                    <comment>Endicia's Access Token</comment>
+                </field>
+                <field id="endicia_mail_classes" translate="label" type="multiselect" sortOrder="80" showInDefault="1">
+                    <label>Endicia Mail Classes</label>
+                    <source_model>AkStackPro\ShippingLabelIntegration\Model\Config\Source\ConfigOption</source_model>
+                    <comment>Choose the USPS Service Type and Package Type you want to see when shipping.</comment>
+                </field>
+            </group>
+             <group id="ups_worldship_config" translate="label" sortOrder="20" showInDefault="1">
+                <label>UPS Worldship Shipping integration settings</label>
+
+                <field id="ups_worldship_account_number" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>UPS Account Number</label>
+                    <comment>Your UPS's Account Number</comment>
+                </field>
+                <field id="ups_worldship_api_endpoint" translate="label" type="text" sortOrder="25" showInDefault="1">
+                    <label>Shipping API End Point</label>
+                    <validate>validate-url</validate>
+                    <comment>UPS's API End Point</comment>
+                </field>
+                <field id="ups_worldship_client_id" translate="label" type="obscure" sortOrder="30" showInDefault="1">
+                    <label>Client ID</label>
+                    <comment>Your account's Client ID</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id='ups_worldship_secret_id' translate='label' type='obscure' sortOrder='40' showInDefault='1'>
+                    <label>Secret ID</label>
+                    <comment>Your account's Secret ID</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="ups_worldship_access_token_url" translate="label" type="text" sortOrder="60" showInDefault="1">
+                    <label>UPS Access Token URL</label>
+                    <validate>validate-url</validate>
+                    <comment>UPS Access Token</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,385 @@
+<?php
+/**
+ * Copyright © AkStackPro, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Shipping\Block\Adminhtml\Create\Form $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
+/** @var \Magento\Tax\Helper\Data $taxHelper */
+$taxHelper = $block->getData('taxHelper');
+$newShipmentBlock = $this->getLayout()->createBlock(\AkStackPro\ShippingLabelIntegration\Block\Adminhtml\Order\Shipment\NewShipment::class);
+?>
+<form id="edit_form" method="post" action="<?= $block->escapeUrl($block->getSaveUrl()) ?>">
+    <?= $block->getBlockHtml('formkey') ?>
+    <?php  $_order = $block->getShipment()->getOrder() ?>
+    <!-- Areeb Work starts -->
+        <?php $orderId = $_order->getId(); ?>
+    <!-- Areeb Work  Ended -->
+    <?= $block->getChildHtml('order_info') ?>
+    <div class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Payment &amp; Shipping Method')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item order-payment-method">
+                <?php /* Billing Address */ ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?=$block->escapeHtml(__('Payment Information')) ?></span>
+                </div>
+                <div class="admin__page-section-item-content">
+                    <div><?= $block->getPaymentHtml() ?></div>
+                    <div class="order-payment-currency">
+                        <?= $block->escapeHtml(__('The order was placed using %1.', $_order->getOrderCurrencyCode())) ?>
+                    </div>
+                </div>
+            </div>
+            <div class="admin__page-section-item order-shipping-address">
+                <?php /* Shipping Address */ ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?= $block->escapeHtml(__('Shipping Information')) ?></span>
+                </div>
+
+
+
+
+
+
+                <?php if ($newShipmentBlock->isModuleActive()): ?>
+<button class="action-secondary" id="open-popup-button" type="button" data-shipping-rates="<?= $block->escapeHtml(json_encode($newShipmentBlock->getShippingRates())) ?>">
+    Get Worldship Shipping Rates
+</button>
+<?php endif; ?>
+
+<!-- Add the popup modal content (hidden by default) -->
+<div id="custom-popup" style="display: none;">
+    <p>Select a shipping rate:</p>
+    <?php
+    $shippingRates = $newShipmentBlock->getShippingRates();
+    if (!empty($shippingRates)):
+        foreach ($shippingRates as $rate):
+    ?>
+    <label for="rate-<?= $rate['service_code'] ?>">
+        <input type="radio" id="rate-<?= $rate['service_code'] ?>" name="selected_rate" value="<?= $rate['service_code'] ?>">
+        <?= $rate['service_description'] ?> => $<?= $rate['total_charges'] ?>
+    </label>
+    <br>
+    <?php endforeach; ?>
+    <?php else: ?>
+    <p>No shipping rates available.</p>
+    <?php endif; ?>
+
+    <!-- Additional input fields for Weight, Length, Width, and Height (initially hidden) -->
+    <div class="input-fields package-info" style="display: none;">
+        <div class="col">
+            <label for="ups_weight">Weight (lbs)</label>
+            <input type="text" id="ups_weight" name="ups_weight">
+        </div>
+        <div class="col">
+            <label for="ups_length">Length (in)</label>
+            <input type="text" id="ups_length" name="ups_length">
+        </div>
+        <div class="col">
+            <label for="ups_width">Width (in)</label>
+            <input type="text" id="ups_width" name="ups_width">
+        </div>
+
+        <div class="col">
+            <label for="ups_height">Height (in)</label>
+            <input type="text" id="ups_height" name="ups_height">
+        </div>
+    </div>
+
+</div>
+
+<?php if ($newShipmentBlock->isModuleActive()): ?>
+    <button class="action-secondary" id="open-endicia-popup-button" type="button" data-shipping-rates="<?= $block->escapeHtml(json_encode($newShipmentBlock->getEndiciaShippingRates())) ?>">
+        Get Endicia Shipping Rates
+    </button>
+<?php endif; ?>
+
+<!-- Add the popup modal content (hidden by default) -->
+<div id="endicia-custom-popup" style="display: none;">
+    <p>Select a shipping rate:</p>
+    <?php $rates = $newShipmentBlock->getEndiciaShippingRates(); ?>
+    <?php if (!empty($rates)): ?>
+        <?php foreach ($rates as $rate): ?>
+            <label for="rate-<?= $rate['service_type'] ?>">
+                <input type="radio" id="rate-<?= $rate['service_type'] ?>" name="selected_rate" value="<?= $rate['service_type'] ?>">
+                $<?= $rate['total_amount'].' - '.$rate['service_type'].' - '.$rate['packaging_type']?>
+            </label>
+            <br>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>No shipping rates available.</p>
+    <?php endif; ?>
+
+    <!-- Additional input fields for Weight, Length, Width, and Height (initially hidden) -->
+    <div class="input-fields package-info" style="display: none;">
+        <div class="col">
+            <label for="endicia_ups_weight">Weight (lbs)</label>
+            <input type="text" id="endicia_ups_weight" name="ups_weight">
+        </div>
+        <div class="col">
+            <label for="endicia_ups_length">Length (in)</label>
+            <input type="text" id="endicia_ups_length" name="ups_length">
+        </div>
+        <div class="col">
+            <label for="endicia_ups_width">Width (in)</label>
+            <input type="text" id="endicia_ups_width" name="ups_width">
+        </div>
+
+        <div class="col">
+            <label for="endicia_ups_height">Height (in)</label>
+            <input type="text" id="endicia_ups_height" name="ups_height">
+        </div>
+    </div>
+</div>
+
+
+
+                <div class="admin__page-section-item-content shipping-description-wrapper">
+                    <div class="shipping-description-title">
+                        <?= $block->escapeHtml($_order->getShippingDescription()) ?>
+                    </div>
+                    <div class="shipping-description-content">
+                        <?= $block->escapeHtml(__('Total Shipping Charges')) ?>:
+
+                        <?php if ($taxHelper->displayShippingPriceIncludingTax()): ?>
+                            <?php $_excl = $block->displayShippingPriceInclTax($_order); ?>
+                        <?php else: ?>
+                            <?php $_excl = $block->displayPriceAttribute('shipping_amount', false, ' '); ?>
+                        <?php endif; ?>
+                        <?php $_incl = $block->displayShippingPriceInclTax($_order); ?>
+                        <?= /** @noEscape */ $_excl ?>
+                        <?php if ($taxHelper->displayShippingBothPrices()
+                            && $_incl != $_excl): ?>
+                        (<?= $block->escapeHtml(__('Incl. Tax')) ?> <?= /** @noEscape */ $_incl ?>)
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div><?= $block->getChildHtml('shipment_tracking') ?></div>
+            </div>
+        </div>
+    </div>
+    <div><?= $block->getChildHtml('extra_shipment_info') ?></div>
+    <div id="ship_items_container">
+        <?= $block->getItemsHtml() ?>
+    </div>
+</form>
+
+<!-- </div> -->
+<script type="text/javascript">
+    // Existing JavaScript code
+    require(['jquery', 'Magento_Ui/js/modal/modal'], function($, modal) {
+        var options = {
+            type: 'popup',
+            responsive: true,
+            innerScroll: true,
+            title: 'UPS WORLDSHIP Shipping Label',
+            buttons: [{
+                text: $.mage.__('Submit & Generate Label'),
+                class: 'action-secondary',
+                click: function () {
+                    var selectedRate = $("input[name='selected_rate']:checked").val();
+                    var weight = $('#ups_weight').val();
+                    var length = $('#ups_length').val();
+                    var width = $('#ups_width').val();
+                    var height = $('#ups_height').val();
+
+                    if (selectedRate && length && width && height) {
+                        var requestData = {
+                            selectedRate: selectedRate,
+                            weight: weight,
+                            length: length,
+                            width: width,
+                            height: height,
+                            orderId: <?= $orderId ?> 
+                        };
+
+                        $.ajax({
+                            url: '/admin_1m3cpa/shippinglabelintegration/shipping/generate',
+                            type: 'POST',
+                            data: requestData,
+                            showLoader: true,
+                            success: function (response) {
+                                if (response.success === true) {
+                                    window.location.href = '<?php echo $block->escapeHtml($block->escapeHtml($this->getUrl("sales/order/view", ["order_id" => $orderId]))) ?>';
+                                } else {
+                                    // alert('Label generation failed: ' + response.message);
+                                    console.log('Label generation failed: ' + response.message);
+                                    console.log('Label generation failed: ' + response.success);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("This is error" + error);
+                                console.log("This is xhr" + xhr);
+                                console.log("This is status" + status);
+                                // $('#edit_form').submit();
+                                
+                            }
+                        });
+                    } else {
+                        alert('Please select a rate and provide dimensions (Weight, Length, Width, Height).');
+                    }
+                    this.closeModal();
+                }
+            }]
+        };
+
+        $('#open-popup-button').on('click', function () {
+            var popup = modal(options, $('#custom-popup'));
+            $('#custom-popup').modal('openModal');
+
+            // Show the input fields when a rate is selected
+            $("input[name='selected_rate']").on('change', function() {
+                var selectedRate = $(this).val();
+                if (selectedRate) {
+                    $('.input-fields').show();
+                } else {
+                    $('.input-fields').hide();
+                }
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    // ENDICIA JavaScript code
+    require(['jquery', 'Magento_Ui/js/modal/modal'], function($, modal) {
+        var options = {
+            type: 'popup',
+            responsive: true,
+            innerScroll: true,
+            title: 'ENDICIA USPS Shipping Label',
+            buttons: [{
+                text: $.mage.__('Submit & Generate Label'),
+                class: 'action-secondary',
+                click: function () {
+                    var selectedRate = $("input[name='selected_rate']:checked").val();
+                    var weight = $('#endicia_ups_weight').val();
+                    var length = $('#endicia_ups_length').val();
+                    var width = $('#endicia_ups_width').val();
+                    var height = $('#endicia_ups_height').val();
+
+                    if (selectedRate && length && width && height) {
+                        var requestData = {
+                            selectedRate: selectedRate,
+                            weight: weight,
+                            length: length,
+                            width: width,
+                            height: height,
+                            orderId: <?= $orderId ?> 
+                        };
+
+                        $.ajax({
+                            url: '/admin_1m3cpa/shippinglabelintegration/shipping/endiciagenerate',
+                            type: 'POST',
+                            data: requestData,
+                            showLoader: true,
+                            success: function (response) {
+                                if (response.success === true) {
+                                    window.location.href = '<?php echo $block->escapeHtml($block->escapeHtml($this->getUrl("sales/order/view", ["order_id" => $orderId]))) ?>';
+                                } else {
+                                    console.log('Label generation failed: ' + response.message);
+                                    console.log('Label generation failed: ' + response.success);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("This is error" + error);
+                                console.log("This is xhr" + xhr);
+                                console.log("This is status" + status);
+                            }
+                        });
+                    } else {
+                        alert('Please select a rate and provide dimensions (Weight, Length, Width, Height).');
+                    }
+                    this.closeModal();
+                }
+            }]
+        };
+
+        $('#open-endicia-popup-button').on('click', function () {
+            var popup = modal(options, $('#endicia-custom-popup'));
+            $('#endicia-custom-popup').modal('openModal');
+
+            // Show the input fields when a rate is selected
+            $("input[name='selected_rate']").on('change', function() {
+                var selectedRate = $(this).val();
+                if (selectedRate) {
+                    $('.input-fields').show();
+                } else {
+                    $('.input-fields').hide();
+                }
+            });
+        });
+    });
+</script>
+<style type="text/css">
+ .input-fields.package-info .col {
+    display: inline-block;
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+#custom-popup label {
+    display: block;
+    font-size: 14px;
+}
+#custom-popup p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.modal-slide .modal-title {
+    text-align: center;
+}
+.input-fields.package-info label {
+    text-align: center;
+    margin-bottom: 3px;
+}
+#custom-popup label {
+    display: block;
+    font-size: 14px;
+    background: #efefef;
+    padding: 10px;
+}
+</style>
+
+<style type="text/css">
+#endicia-custom-popup label {
+    display: block;
+    font-size: 14px;
+}
+#endicia-custom-popup p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+#endicia-custom-popup label {
+    display: block;
+    font-size: 14px;
+    background: #efefef;
+    padding: 10px;
+}
+</style>
+
+<?php $scriptString = <<<script
+
+require([
+    "jquery",
+    "mage/mage",
+    "prototype"
+], function(jQuery){
+    jQuery('#edit_form').mage('form').mage('validation');
+
+});
+
+script;
+?>
+
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<?= $block->getChildHtml('shipment_packaging');
