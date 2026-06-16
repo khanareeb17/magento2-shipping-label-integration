@@ -17,7 +17,7 @@ use AkStackPro\ShippingLabelIntegration\Model\Services\Tracking;
  *
  * This command sends a cURL request to Sport South's inventory API.
  *
- * @package Rural\SportSouth\Console\Command
+ * @package AkStackPro\SportSouth\Console\Command
  */
 class UpdateInventoryCommand extends Command
 {

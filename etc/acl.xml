@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author    AkStackPro
+ * @copyright Copyright (c) 2026 AkStackPro (http://akstackpro.com/)
+ * @package   AkStackPro_ShippingLabelIntegration
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="AkStackPro_Core::menu">
+                    <resource id="AkStackPro_ShippingLabelIntegration::menu"
+                              title="Shipping Label Integration"
+                              translate="title"
+                              sortOrder="40"/>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="AkStackPro_Core::config">
+                                <resource id="AkStackPro_ShippingLabelIntegration::configuration"
+                                          title="UPS &amp; Endicia Web Services"
+                                          translate="title"
+                                          sortOrder="30"/>
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

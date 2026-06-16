@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author    AkStackPro
+ * @copyright Copyright (c) 2026 AkStackPro (http://akstackpro.com/)
+ * @package   AkStackPro_ShippingLabelIntegration
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="AkStackPro_ShippingLabelIntegration::menu"
+             title="Shipping Label Integration"
+             translate="title"
+             module="AkStackPro_ShippingLabelIntegration"
+             sortOrder="40"
+             parent="AkStackPro_Core::menu"
+             resource="AkStackPro_ShippingLabelIntegration::menu"/>
+        <add id="AkStackPro_ShippingLabelIntegration::configuration"
+             title="Settings"
+             translate="title"
+             module="AkStackPro_ShippingLabelIntegration"
+             sortOrder="10"
+             parent="AkStackPro_ShippingLabelIntegration::menu"
+             action="adminhtml/system_config/edit/section/shippinglabelintegration"
+             resource="AkStackPro_ShippingLabelIntegration::configuration"/>
+    </menu>
+</config>
